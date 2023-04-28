@@ -1,0 +1,7 @@
+---
+- name: Update all device packages
+  hosts: all:!router
+  become: true
+
+  roles:
+    - common

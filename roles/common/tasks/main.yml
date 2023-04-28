@@ -1,0 +1,12 @@
+---
+# tasks file for roles/common
+- name: Update and upgrade software DNF
+  ansible.builtin.dnf:
+    name: "*"
+    update_cache: true
+    state: latest
+- name: Update and upgrade software APT
+  ansible.builtin.apt:
+    name: "*"
+    update_cache: true
+    state: latest
