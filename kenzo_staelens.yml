@@ -1,0 +1,13 @@
+---
+- name: Update all device packages
+  hosts: all:!router:!controlhosts
+  become: true
+
+  roles:
+    - common
+
+- name: Webservers installeren
+  hosts: webservers
+
+  roles:
+    - webserver
