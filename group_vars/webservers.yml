@@ -1,5 +1,5 @@
 ansible_user: ubuntu
-ansible_password: Azerty123
+# ansible_password: Azerty123
 ansible_connection: ssh
 ansible_become_pass: Azerty123
 package_manager: apt
