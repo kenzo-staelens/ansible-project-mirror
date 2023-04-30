@@ -14,3 +14,21 @@
     state: enabled
   with_items:
     - "{{ groups['webservers'] | map('extract', hostvars, ['ansible_host']) }}"
+
+- name: Ensure pip installed
+  ansible.builtin.dnf:
+    name: python3-pip
+    state: present
+
+- name: Ensure pymysql installed
+  ansible.builtin.pip:
+    name: "pymysql"
+    state: present
+
+- name: Create database users
+  community.mysql.mysql_user:
+    name: "{{ item.username }}"
+    password: "{{ item.password }}"
+    priv: '*.*:ALL'
+    state: present
+  with_items: "{{ database_users }}"
