@@ -1,11 +1,56 @@
 ---
 # tasks file for roles/webserver
-- name: Install Services
+- name: Install Apache
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: apache2
     state: latest
+  notify:
+    - Install Webserver Subcomponents
+    - Enable Apache
+
+- name: Setup SSL
+  ansible.builtin.apt:
+    name: openssl
+    state: latest
+  notify:
+    - Configure SSL for Apache
+
+- name: Ensure folders
+  ansible.builtin.file:
+    path: "{{ item }}/{{ ansible_hostname }}"
+    state: directory
+    mode: '755'
   loop:
-    - apache2
-    - php
-    - mysql-server
-    - php-mysql
+    - /etc/apache2/certs
+    - /var/www/vhosts
+
+- name: Create SSL private key
+  community.crypto.openssl_privatekey:
+    path: "/etc/apache2/certs/{{ ansible_hostname }}/ansible.key"
+
+- name: Generate certificates
+  community.crypto.x509_certificate:
+    path: "/etc/apache2/certs/{{ ansible_hostname }}/ansible.crt"
+    privatekey_path: "/etc/apache2/certs/{{ ansible_hostname }}/ansible.key"
+    provider: selfsigned
+    state: present
+
+- name: Deliver html content
+  ansible.builtin.copy:
+    src: index.html
+    dest: "/var/www/vhosts/{{ ansible_hostname }}/index.html"
+    mode: '644'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Template vhost file
+  ansible.builtin.template:
+    src: vhosts.conf.j2
+    dest: "/etc/apache2/sites-available/{{ ansible_hostname }}.conf"
+    owner: root
+    group: root
+    mode: '644'
+  notify:
+    - Enable new Site
+    - Restart Apache

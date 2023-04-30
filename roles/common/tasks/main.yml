@@ -12,13 +12,13 @@
     update_cache: true
     state: latest
   when: package_manager == 'apt'
-- name: Enable firewalld
-  ansible.builtin.service:
-    name: "{{ firewall_type }}"
-    state: started
-    enabled: true
 - name: Enable SSH
   ansible.builtin.service:
     name: sshd
     state: started
+    enabled: true
+- name: Enable firewalld
+  ansible.builtin.service:
+    name: "{{ firewall_type }}"
+    state: restarted
     enabled: true

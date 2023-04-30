@@ -3,19 +3,31 @@
   hosts: all:!router
   become: true
 
-  roles:
-    - setupssh
+  #roles:
+  #  - setupssh
 
 - name: Update all device packages
   hosts: all:!router
   become: true
 
-  roles:
-    - common
+  #roles:
+  #  - common
 
 - name: Webservers installeren
   hosts: webservers
   become: true
 
-  roles:
-    - webserver
+  #roles:
+  #  - webserver
+
+- name: Test webserver
+  hosts: webservers
+  tasks:
+    - name: Test http
+      ansible.builtin.uri:
+        url: "http://{{ ansible_hostname }}"
+
+    - name: Test https
+      ansible.builtin.uri:
+        url: "https://{{ ansible_hostname }}"
+        validate_certs: false
