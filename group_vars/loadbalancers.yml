@@ -2,4 +2,5 @@ ansible_user: student
 ansible_password: student
 ansible_connection: ssh
 ansible_become_pass: student
-ansible_package_manager: dnf
+package_manager: dnf
+firewall_type: firewalld

@@ -2,4 +2,5 @@ ansible_user: ubuntu
 ansible_password: Azerty123
 ansible_connection: ssh
 ansible_become_pass: Azerty123
-ansible_package_manager: apt 
+package_manager: apt
+firewall_type: ufw

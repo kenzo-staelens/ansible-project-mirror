@@ -1,6 +1,6 @@
 ---
 - name: Update all device packages
-  hosts: all:!router:!controlhosts
+  hosts: all:!router
   become: true
 
   roles:
