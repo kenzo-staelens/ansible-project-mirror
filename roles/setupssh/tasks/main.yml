@@ -1,0 +1,14 @@
+---
+# tasks file for roles/setupssh
+- name: Generate ssh keypair
+  community.crypto.openssh_keypair:
+    type: rsa
+    path: "{{ lookup('env', 'HOME') + '/.ssh/id_rsa' }}"
+  when: "'controlhosts' in group_names"
+
+- name: Copy SSH keys
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+  when: "'controlhosts' not in group_names"

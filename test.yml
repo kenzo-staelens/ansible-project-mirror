@@ -1,8 +1,9 @@
 ---
 - name: Test
-  hosts: all
+  hosts: all:!router
   become: false
   tasks:
     - name: Test Debug
       ansible.builtin.debug:
-        msg: "{{ ansible_host }}"
+        msg: "{{ group_names }}"
+      when: "'controlhosts' in group_names"
