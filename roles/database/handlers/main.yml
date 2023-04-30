@@ -1,2 +1,7 @@
 ---
 # handlers file for roles/database
+- name: Enable Apache
+  ansible.builtin.service:
+    name: mysql
+    enabled: true
+    state: started

@@ -20,8 +20,6 @@
   roles:
     - webserver
 
-- name: Test webserver
-  hosts: webservers
   tasks:
     - name: Test http
       ansible.builtin.uri:
@@ -31,3 +29,9 @@
       ansible.builtin.uri:
         url: "https://{{ ansible_hostname }}"
         validate_certs: false
+
+- name: Mysql server installeren
+  hosts: dbserver
+  become: true
+  roles:
+    - database
