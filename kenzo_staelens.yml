@@ -3,22 +3,22 @@
   hosts: all:!router
   become: true
 
-  #roles:
-  #  - setupssh
+  roles:
+    - setupssh
 
 - name: Update all device packages
   hosts: all:!router
   become: true
 
-  #roles:
-  #  - common
+  roles:
+    - common
 
 - name: Webservers installeren
   hosts: webservers
   become: true
 
-  #roles:
-  #  - webserver
+  roles:
+    - webserver
 
 - name: Test webserver
   hosts: webservers
