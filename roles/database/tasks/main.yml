@@ -6,3 +6,11 @@
     state: latest
   notify:
     - Enable Mysql Server
+
+- name: Open firewall
+  ansible.posix.firewalld:
+    source: "{{ item }}/8"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ groups['webservers'] | map('extract', hostvars, ['ansible_host']) }}"

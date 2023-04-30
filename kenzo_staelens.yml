@@ -1,34 +1,34 @@
 ---
-- name: Setup SSH keys
-  hosts: all:!router
-  become: true
+# - name: Setup SSH keys
+#   hosts: all:!router
+#   become: true
 
-  roles:
-    - setupssh
+#   roles:
+#     - setupssh
 
-- name: Update all device packages
-  hosts: all:!router
-  become: true
+# - name: Update all device packages
+#   hosts: all:!router
+#   become: true
 
-  roles:
-    - common
+#   roles:
+#     - common
 
-- name: Webservers installeren
-  hosts: webservers
-  become: true
+# - name: Webservers installeren
+#   hosts: webservers
+#   become: true
 
-  roles:
-    - webserver
+#   roles:
+#     - webserver
 
-  tasks:
-    - name: Test http
-      ansible.builtin.uri:
-        url: "http://{{ ansible_hostname }}"
+#   tasks:
+#     - name: Test http
+#       ansible.builtin.uri:
+#         url: "http://{{ ansible_hostname }}"
 
-    - name: Test https
-      ansible.builtin.uri:
-        url: "https://{{ ansible_hostname }}"
-        validate_certs: false
+#     - name: Test https
+#       ansible.builtin.uri:
+#         url: "https://{{ ansible_hostname }}"
+#         validate_certs: false
 
 - name: Mysql server installeren
   hosts: dbserver
