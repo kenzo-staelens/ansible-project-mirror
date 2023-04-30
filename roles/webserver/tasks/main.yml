@@ -1,2 +1,11 @@
 ---
 # tasks file for roles/webserver
+- name: Install Services
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - apache2
+    - php
+    - mysql-server
+    - php-mysql

@@ -15,6 +15,7 @@
 
 - name: Webservers installeren
   hosts: webservers
+  become: true
 
   roles:
     - webserver

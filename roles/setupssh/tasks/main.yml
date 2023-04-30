@@ -4,6 +4,8 @@
   community.crypto.openssh_keypair:
     type: rsa
     path: "{{ lookup('env', 'HOME') + '/.ssh/id_rsa' }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   when: "'controlhosts' in group_names"
 
 - name: Copy SSH keys
