@@ -2,7 +2,6 @@
 
 <VirtualHost *:80>
     ServerAdmin webmaster@{{ ansible_hostname }}
-    ServerName {{ ansible_hostname }}
     ErrorLog ${APACHE_LOG_DIR}/{{ ansible_hostname }}-error.log
     CustomLog ${APACHE_LOG_DIR}/{{ ansible_hostname }}-common.log common
     DocumentRoot /var/www/vhosts/{{ ansible_hostname }}/
@@ -16,7 +15,6 @@
 
 <VirtualHost *:443>
     ServerAdmin webmaster@{{ ansible_hostname }}
-    ServerName {{ ansible_hostname }}
     ErrorLog ${APACHE_LOG_DIR}/{{ ansible_hostname }}-error.log
     CustomLog ${APACHE_LOG_DIR}/{{ ansible_hostname }}-common.log common
     DocumentRoot /var/www/vhosts/{{ ansible_hostname }}/

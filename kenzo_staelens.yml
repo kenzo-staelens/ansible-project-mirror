@@ -38,6 +38,5 @@
 
 - name: Setup website
   hosts: webserver
-  become: true
   roles:
     - website-github

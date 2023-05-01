@@ -44,6 +44,10 @@
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
 
+- name: Remove default site
+  ansible.builtin.command:
+    cmd: "/usr/sbin/a2ensite 000-default"
+
 - name: Template vhost file
   ansible.builtin.template:
     src: vhosts.conf.j2
