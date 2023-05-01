@@ -32,3 +32,30 @@
     priv: '*.*:ALL'
     state: present
   with_items: "{{ database_users }}"
+  no_log: true
+
+- name: Create Database
+  community.mysql.mysql_db:
+    name: "{{ item.database }}"
+    login_user: "{{ item.username }}"
+    login_password: "{{ item.password }}"
+    state: present
+  with_items: "{{ databases }}"
+  no_log: true
+
+- name: Run user query
+  community.mysql.mysql_query:
+    login_db: "{{ item.database }}"
+    login_user: "{{ item.username }}"
+    login_password: "{{ item.password }}"
+    query: "select user, host, password_last_changed from mysql.user"
+  with_items: "{{ databases }}"
+  register: users_from_db
+  no_log: true
+
+- name: Show users in dbserver
+  ansible.builtin.debug:
+    msg: "user: {{ item.user }} changed password at {{ item.password_last_changed }} @{{ item.host }}"
+  with_items: "{{ users_from_db.results[0].query_result }}"
+  loop_control:
+    label: "{{ item.user }}"

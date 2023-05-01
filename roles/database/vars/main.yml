@@ -1,3 +1,4 @@
 ---
 # vars file for roles/database
 database_users: [{"username":"kenzo", "password":"mysqlpass"}]
+databases: [{"username":"kenzo", "password":"mysqlpass", "database":"kenzostaelens"}]
