@@ -4,8 +4,8 @@
   ansible.builtin.lineinfile:
     path: /etc/hosts
     state: present
-    regexp: "^{{ item.name }}\t{{ item.ip }}.*$"
-    line: "{{ item.name }}\t {{ item.ip }}"
+    regexp: "^{{ item.ip }}\t{{ item.name }}.*$"
+    line: "{{ item.ip }}\t {{ item.name }}"
   with_items: "{{ dict(( groups['loadbalancers'] + groups['webservers'] + groups['routers'] ) |
     zip(( groups['loadbalancers'] + groups['webservers'] + groups['routers'] ) | map('extract', hostvars, 'ansible_host')))
     | dict2items(key_name='name', value_name='ip') }}"

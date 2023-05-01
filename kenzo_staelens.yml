@@ -48,14 +48,14 @@
 #   roles:
 #     - loadbalancer
 
-# - name: Diverse
-#   hosts: webservers:dbserver:controlhosts
-#   become: true
-#   roles:
-#     - varia
-
-- name: Router config
-  hosts: routers
+- name: Diverse
+  hosts: webservers:dbserver:controlhosts
   become: true
   roles:
-    - routerconfig
+    - varia
+
+# - name: Router config
+#   hosts: routers
+#   become: true
+#   roles:
+#     - routerconfig
