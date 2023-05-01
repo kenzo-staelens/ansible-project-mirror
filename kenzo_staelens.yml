@@ -42,8 +42,14 @@
 #   roles:
 #     - website-github
 
-- name: Setup Loadbalancer
-  hosts: loadbalancers
+# - name: Setup Loadbalancer
+#   hosts: loadbalancers
+#   become: true
+#   roles:
+#     - loadbalancer
+
+- name: Diverse
+  hosts: webservers:dbserver:controlhosts
   become: true
   roles:
-    - loadbalancer
+    - varia
