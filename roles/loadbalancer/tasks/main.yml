@@ -1,2 +1,16 @@
 ---
 # tasks file for roles/loadbalancer
+- name: Install Nginx
+  ansible.builtin.dnf:
+    name: "nginx"
+  notify:
+    - Enable nginx
+
+- name: Enable firewall
+  ansible.posix.firewalld:
+    zone: public
+    service: http
+    permanent: true
+    state: enabled
+  notify:
+    - Restart Firewall

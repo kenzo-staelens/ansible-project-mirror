@@ -1,2 +1,13 @@
 ---
 # handlers file for roles/loadbalancer
+- name: Enable nginx
+  ansible.builtin.service:
+    name: "nginx"
+    state: started
+    enabled: true
+
+- name: Restart firewall
+  ansible.builtin.service:
+    name: "firewalld"
+    state: started
+    enabled: true
