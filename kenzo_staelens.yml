@@ -48,14 +48,57 @@
 #   roles:
 #     - loadbalancer
 
-- name: Diverse
-  hosts: webservers:dbserver:controlhosts
-  become: true
-  roles:
-    - varia
-
-# - name: Router config
-#   hosts: routers
+# - name: Diverse
+#   hosts: webservers:dbserver:controlhosts
 #   become: true
 #   roles:
-#     - routerconfig
+#     - varia
+
+# - name: Ensure SSH config available for routers
+#   hosts: controlhosts
+#   become: true
+#   tasks:
+#     - name: Setup config rules
+#       ansible.builtin.lineinfile:
+#         path: /etc/ssh/ssh_config
+#         line: "{{ item }}"
+#         state: present
+#       loop:
+#         - KexAlgorithms +diffie-hellman-group14-sha1
+#         - Ciphers +aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
+#         - HostKeyAlgorithms +ssh-rsa
+#         - PubkeyAcceptedAlgorithms +ssh-rsa
+#       notify:
+#         - Restart ssh
+#   handlers:
+#     - name: Restart ssh
+#       ansible.builtin.service:
+#         name: sshd
+#         state: restarted
+
+# rhel specific issue with libcrypto
+- name: Set crypto policy
+  hosts: controlhosts
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Set to LEGACY
+      ansible.builtin.command:
+        cmd: "update-crypto-policies --set LEGACY"
+      changed_when: true
+
+- name: Cisco show version example
+  hosts: routers
+  # gather_facts: false
+  roles:
+    - routerconfig
+
+- name: Reet crypto policy
+  hosts: controlhosts
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Set to LEGACY
+      ansible.builtin.command:
+        cmd: "update-crypto-policies --set DEFAULT"
+      changed_when: true

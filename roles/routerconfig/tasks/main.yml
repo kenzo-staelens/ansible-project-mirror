@@ -1,2 +1,11 @@
 ---
 # tasks file for roles/routerconfig
+- name: Set hostname
+  cisco.ios.ios_hostname:
+    config:
+      hostname: Router1
+    state: merged
+
+- name: Backup routerconfig
+  cisco.ios.ios_config:
+    backup: true
