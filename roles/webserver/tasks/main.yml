@@ -22,7 +22,6 @@
     mode: '755'
   loop:
     - /etc/apache2/certs
-    - /var/www/vhosts
 
 - name: Create SSL private key
   community.crypto.openssl_privatekey:
@@ -35,19 +34,6 @@
     provider: selfsigned
     state: present
 
-- name: Deliver html content
-  ansible.builtin.copy:
-    src: index.html
-    dest: "/var/www/vhosts/{{ ansible_hostname }}/index.html"
-    mode: '644'
-
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
-
-- name: Remove default site
-  ansible.builtin.command:
-    cmd: "/usr/sbin/a2ensite 000-default"
-
 - name: Template vhost file
   ansible.builtin.template:
     src: vhosts.conf.j2
@@ -56,5 +42,6 @@
     group: root
     mode: '644'
   notify:
-    - Enable new Site
+    - Enable new site
+    - Remove default site
     - Restart Apache
