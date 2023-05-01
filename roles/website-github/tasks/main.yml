@@ -1,13 +1,11 @@
 ---
 # tasks file for roles/website-github
 - name: Ensure git exists
-  become: true
   ansible.builtin.apt:
     name: git
     state: latest
 
 - name: Copy files from git repo # noqa: latest
-  become: true
   ansible.builtin.git:
     repo: https://github.com/poojan1812/Ansible.git
     dest: "/var/www/vhosts/{{ ansible_hostname }}"

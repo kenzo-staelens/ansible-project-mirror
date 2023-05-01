@@ -38,5 +38,12 @@
 
 - name: Setup website
   hosts: webservers
+  become: true
   roles:
     - website-github
+
+- name: Setup Loadbalancer
+  hosts: loadbalancers
+  become: true
+  roles:
+    - loadbalancer
