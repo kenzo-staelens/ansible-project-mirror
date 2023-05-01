@@ -1,2 +1,3 @@
 ---
 # vars file for roles/loadbalancer
+webserver_hosts: "{{ groups['webservers'] | map('extract', hostvars, ['ansible_host']) }}"
