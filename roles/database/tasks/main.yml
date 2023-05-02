@@ -4,8 +4,13 @@
   ansible.builtin.dnf:
     name: mysql-server
     state: latest
-  notify:
-    - Enable Mysql Server
+
+#handlers runnen na alle tasks, deze task *moet* gebeuren voordat users/databases kunnen worden gemaakt
+- name: Enable Mysql Server
+  ansible.builtin.service:
+    name: mysqld
+    enabled: true
+    state: started
 
 - name: Open firewall
   ansible.posix.firewalld:
