@@ -70,6 +70,14 @@
         cmd: "update-crypto-policies --set LEGACY"
       changed_when: true
 
+- name: Ensure pylibssh
+  hosts: controlhosts
+  become: true
+  tasks:
+    - name: Install pylibssh
+      ansible.builtin.pip:
+        name: ansible-pylibssh
+
 - name: Cisco show version example
   hosts: routers
   roles:
