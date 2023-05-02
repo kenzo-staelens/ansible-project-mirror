@@ -45,3 +45,19 @@
     - Enable new site
     - Remove default site
     - Restart Apache
+
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+
+- name: Setup firewall rules
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - '80'
+    - '443'
+    - '22'
+  notify:
+    - Restart Firewall

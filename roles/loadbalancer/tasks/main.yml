@@ -9,17 +9,49 @@
 - name: Enable firewall
   ansible.posix.firewalld:
     zone: public
-    service: http
+    service: "{{ item }}"
     permanent: true
     state: enabled
   notify:
     - Restart Firewall
+  loop:
+    - http
+    - https
 
 - name: Enable httpd on selinux
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: true
     persistent: true
+
+- name: Ensure ssl folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '755'
+  loop:
+    - /etc/ssl/nginx/certs
+    - /etc/ssl/nginx/private
+
+- name: Ensure openssl
+  ansible.builtin.dnf:
+    name: openssl
+    state: latest
+
+- name: Ensure cryptography
+  ansible.builtin.pip:
+    name: "cryptography"
+
+- name: Create SSL private key
+  community.crypto.openssl_privatekey:
+    path: "/etc/ssl/nginx/private/nginx.key"
+
+- name: Generate certificates
+  community.crypto.x509_certificate:
+    path: "/etc/ssl/nginx/certs/nginx.crt"
+    privatekey_path: "/etc/ssl/nginx/private/nginx.key"
+    provider: selfsigned
+    state: present
 
 - name: Copy configuration
   ansible.builtin.template:
