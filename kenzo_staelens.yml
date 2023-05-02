@@ -1,11 +1,4 @@
 ---
-- name: Setup SSH keys
-  hosts: all:!router
-  become: true
-
-  roles:
-    - setupssh
-
 - name: Update all device packages
   hosts: all:!router
   become: true

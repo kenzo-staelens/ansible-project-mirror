@@ -1,0 +1,6 @@
+- name: Setup SSH keys
+  hosts: all:!router
+  become: true
+
+  roles:
+    - setupssh
