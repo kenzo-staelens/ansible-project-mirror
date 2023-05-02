@@ -9,3 +9,5 @@
 - name: Backup routerconfig
   cisco.ios.ios_config:
     backup: true
+    backup_options:
+      filename: "{{ inventory_hostname }}_config"

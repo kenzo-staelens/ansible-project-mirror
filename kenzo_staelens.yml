@@ -82,7 +82,7 @@
   roles:
     - routerconfig
 
-- name: Reet crypto policy
+- name: Reset crypto policy
   hosts: controlhosts
   become: true
   gather_facts: false
