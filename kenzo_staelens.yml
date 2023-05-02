@@ -74,6 +74,10 @@
   hosts: controlhosts
   become: true
   tasks:
+    - name: Install pip
+      ansible.builtin.dnf:
+        name: "python3-pip"
+        state: latest
     - name: Install pylibssh
       ansible.builtin.pip:
         name: ansible-pylibssh
