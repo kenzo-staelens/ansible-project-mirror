@@ -9,3 +9,5 @@
   ansible.builtin.git:
     repo: https://github.com/poojan1812/Ansible.git
     dest: "/var/www/vhosts/{{ ansible_hostname }}"
+  notify:
+    - Restart Apache
