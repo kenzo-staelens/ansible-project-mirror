@@ -6,7 +6,7 @@
     state: started
     enabled: true
 
-- name: Restart firewall
+- name: Restart Firewall
   ansible.builtin.service:
     name: "firewalld"
     state: started
