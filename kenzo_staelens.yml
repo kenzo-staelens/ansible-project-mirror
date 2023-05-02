@@ -1,46 +1,46 @@
 ---
-# - name: Setup SSH keys
-#   hosts: all:!router
-#   become: true
+- name: Setup SSH keys
+  hosts: all:!router
+  become: true
 
-#   roles:
-#     - setupssh
+  roles:
+    - setupssh
 
-# - name: Update all device packages
-#   hosts: all:!router
-#   become: true
+- name: Update all device packages
+  hosts: all:!router
+  become: true
 
-#   roles:
-#     - common
+  roles:
+    - common
 
-# - name: Webservers installeren
-#   hosts: webservers
-#   become: true
+- name: Webservers installeren
+  hosts: webservers
+  become: true
 
-#   roles:
-#     - webserver
+  roles:
+    - webserver
 
-#   tasks:
-#     - name: Test http
-#       ansible.builtin.uri:
-#         url: "http://{{ ansible_hostname }}"
+  tasks:
+    - name: Test http
+      ansible.builtin.uri:
+        url: "http://{{ ansible_hostname }}"
 
-#     - name: Test https
-#       ansible.builtin.uri:
-#         url: "https://{{ ansible_hostname }}"
-#         validate_certs: false
+    - name: Test https
+      ansible.builtin.uri:
+        url: "https://{{ ansible_hostname }}"
+        validate_certs: false
 
-# - name: Mysql server installeren
-#   hosts: dbserver
-#   become: true
-#   roles:
-#     - database
+- name: Mysql server installeren
+  hosts: dbserver
+  become: true
+  roles:
+    - database
 
-# - name: Setup website
-#   hosts: webservers
-#   become: true
-#   roles:
-#     - website-github
+- name: Setup website
+  hosts: webservers
+  become: true
+  roles:
+    - website-github
 
 - name: Setup Loadbalancer
   hosts: loadbalancers
@@ -48,56 +48,56 @@
   roles:
     - loadbalancer
 
-# - name: Diverse
-#   hosts: webservers:dbserver:controlhosts
-#   become: true
-#   roles:
-#     - varia
+- name: Diverse
+  hosts: webservers:dbserver:controlhosts
+  become: true
+  roles:
+    - varia
 
-# - name: Ensure SSH config available for routers
-#   hosts: controlhosts
-#   become: true
-#   tasks:
-#     - name: Setup config rules
-#       ansible.builtin.lineinfile:
-#         path: /etc/ssh/ssh_config
-#         line: "{{ item }}"
-#         state: present
-#       loop:
-#         - KexAlgorithms +diffie-hellman-group14-sha1
-#         - Ciphers +aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
-#         - HostKeyAlgorithms +ssh-rsa
-#         - PubkeyAcceptedAlgorithms +ssh-rsa
-#       notify:
-#         - Restart ssh
-#   handlers:
-#     - name: Restart ssh
-#       ansible.builtin.service:
-#         name: sshd
-#         state: restarted
+- name: Ensure SSH config available for routers
+  hosts: controlhosts
+  become: true
+  tasks:
+    - name: Setup config rules
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/ssh_config
+        line: "{{ item }}"
+        state: present
+      loop:
+        - KexAlgorithms +diffie-hellman-group14-sha1
+        - Ciphers +aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
+        - HostKeyAlgorithms +ssh-rsa
+        - PubkeyAcceptedAlgorithms +ssh-rsa
+      notify:
+        - Restart ssh
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
 
-# # rhel specific issue with libcrypto
-# - name: Set crypto policy
-#   hosts: controlhosts
-#   become: true
-#   gather_facts: false
-#   tasks:
-#     - name: Set to LEGACY
-#       ansible.builtin.command:
-#         cmd: "update-crypto-policies --set LEGACY"
-#       changed_when: true
+# rhel specific issue with libcrypto
+- name: Set crypto policy
+  hosts: controlhosts
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Set to LEGACY
+      ansible.builtin.command:
+        cmd: "update-crypto-policies --set LEGACY"
+      changed_when: true
 
-# - name: Cisco show version example
-#   hosts: routers
-#   roles:
-#     - routerconfig
+- name: Cisco show version example
+  hosts: routers
+  roles:
+    - routerconfig
 
-# - name: Reet crypto policy
-#   hosts: controlhosts
-#   become: true
-#   gather_facts: false
-#   tasks:
-#     - name: Set to DEFAULT
-#       ansible.builtin.command:
-#         cmd: "update-crypto-policies --set DEFAULT"
-#       changed_when: true
+- name: Reet crypto policy
+  hosts: controlhosts
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Set to DEFAULT
+      ansible.builtin.command:
+        cmd: "update-crypto-policies --set DEFAULT"
+      changed_when: true
