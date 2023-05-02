@@ -6,6 +6,12 @@
   roles:
     - common
 
+- name: Diverse
+  hosts: webservers:dbserver:controlhosts
+  become: true
+  roles:
+    - varia
+
 - name: Webservers installeren
   hosts: webservers
   become: true
@@ -31,12 +37,6 @@
   roles:
     - loadbalancer
 
-- name: Diverse
-  hosts: webservers:dbserver:controlhosts
-  become: true
-  roles:
-    - varia
-
 - name: Ensure SSH config available for routers
   hosts: controlhosts
   become: true
@@ -53,6 +53,13 @@
         - PubkeyAcceptedAlgorithms +ssh-rsa
       notify:
         - Restart ssh
+    - name: Install pip
+      ansible.builtin.dnf:
+        name: "python3-pip"
+        state: latest
+    - name: Install pylibssh
+      ansible.builtin.pip:
+        name: ansible-pylibssh
   handlers:
     - name: Restart ssh
       ansible.builtin.service:
@@ -69,18 +76,6 @@
       ansible.builtin.command:
         cmd: "update-crypto-policies --set LEGACY"
       changed_when: true
-
-- name: Ensure pylibssh
-  hosts: controlhosts
-  become: true
-  tasks:
-    - name: Install pip
-      ansible.builtin.dnf:
-        name: "python3-pip"
-        state: latest
-    - name: Install pylibssh
-      ansible.builtin.pip:
-        name: ansible-pylibssh
 
 - name: Cisco show version example
   hosts: routers
